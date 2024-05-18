@@ -12,7 +12,10 @@
 				</el-form-item>
 			</div>
 			<div>
-				<el-button type="primary" @click="starLottery" :disabled="btnDisable"
+				<el-button
+					type="primary"
+					@click="startLottery"
+					:disabled="fixedData.data.length !== 0"
 					>以此列表開始抽獎</el-button
 				>
 				<el-button type="danger" @click="clear">清除重填</el-button>
@@ -61,7 +64,7 @@
 	</div>
 </template>
 <script setup>
-	import { reactive, ref, watchEffect } from "vue";
+	import { onMounted, reactive, ref, watchEffect } from "vue";
 	import { splitStr } from "../../utils/utils";
 	import { ElMessage } from "element-plus";
 	const lotteryStr = ref("");
@@ -75,9 +78,10 @@
 	watchEffect(() => {
 		lotteryList.data = splitStr(lotteryStr.value);
 	});
+
 	// 以此列表開始抽獎
 	// ! 把上部分隱藏
-	function starLottery() {
+	function startLottery() {
 		if (lotteryList.data.length < 2) {
 			ElMessage.warning("至少要有兩個項目");
 			return;
@@ -86,12 +90,26 @@
 		fixedData.data = lotteryList.data;
 		listOne.data = [...lotteryList.data];
 		btnDisable.value = true;
+		// 存 local storage
+		localStorage.setItem("listOne", JSON.stringify(listOne.data));
+		localStorage.setItem("allData", JSON.stringify(fixedData.data));
+		console.log(localStorage.getItem("allData"));
 	}
 	/** 清除資料*/
 	function clear() {
+		// 清除local storage
+		localStorage.setItem("listTwo", JSON.stringify([]));
+		localStorage.setItem("listOne", JSON.stringify([]));
+		localStorage.setItem("allData", JSON.stringify([]));
+
+		// 重製上方搜尋
 		lotteryStr.value = "";
 		lotteryList.data = [];
+		// 重製陣列
 		fixedData.data = [];
+		listOne.data = [];
+		listTwo.data = [];
+		// 重製狀態
 		showInput.value = true;
 		btnDisable.value = false;
 	}
@@ -99,21 +117,37 @@
 	/** 抽籤 */
 	function drawLots() {
 		if (listOne.data.length === 0) {
-			ElMessage.success("已抽完了唷！");
+			ElMessage.error("已抽完了唷！");
 			return;
 		}
+		// 名單總長
 		const arrLen = listOne.data.length;
+		// 隨機碼
 		const random = Math.floor(Math.random() * arrLen);
 		console.log("random", random);
 		ElMessage.success(`抽出的是${listOne.data[random]}`);
+		// 處理資料
 		listTwo.data.push(listOne.data[random]);
 		listOne.data.splice(random, 1);
-		console.log(listOne.data);
-		// 隨機抓陣列的數字
-		// listOne.data.filter((item)=>{
-		//     console.log(item)
-		// })
+		// 處理localStorage
+		localStorage.setItem("listOne", JSON.stringify(listOne.data));
+		localStorage.setItem("listTwo", JSON.stringify(listTwo.data));
 	}
+
+	onMounted(() => {
+		const one = JSON.parse(localStorage.getItem("listOne")) || [];
+		const two = JSON.parse(localStorage.getItem("listTwo")) || [];
+		const allData = JSON.parse(localStorage.getItem("allData")) || [];
+		console.log(allData.length);
+		if (allData.length !== 0) {
+			fixedData.data = allData;
+			listOne.data = one;
+			showInput.value = false;
+		}
+		if (two !== null) {
+			listTwo.data = two;
+		}
+	});
 </script>
 <style scoped lang="scss">
 	ul {
