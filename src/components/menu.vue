@@ -5,7 +5,10 @@
 			<el-sub-menu index="1">
 				<template #title>Profiles</template>
 				<el-menu-item index="1-1">
-					<RouterLink to="/profiles">抽獎</RouterLink>
+					<RouterLink to="/lottery">抽獎</RouterLink>
+				</el-menu-item>
+				<el-menu-item>
+					<RouterLink to="/calendar">日曆</RouterLink>
 				</el-menu-item>
 			</el-sub-menu>
 		</el-menu>

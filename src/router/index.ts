@@ -4,9 +4,14 @@ const router = createRouter({
   history: createWebHistory(),
   routes: [
     {
-      path: '/profiles',
-      name: '作品集',
+      path: '/lottery',
+      name: 'lottery',
       component: () => import('../views/lottery/index.vue')
+    },
+    {
+      path: '/calendar',
+      name: '日曆',
+      component: () => import('../views/calendar/index.vue')
     }
   ]
 })
