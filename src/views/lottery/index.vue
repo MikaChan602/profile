@@ -21,45 +21,54 @@
 				<el-button type="danger" @click="clear">清除重填</el-button>
 			</div>
 		</el-form>
-		<el-divider content-position="left">列表結果</el-divider>
+		<el-divider content-position="left"
+			>列表結果 :共
+			<span style="color: crimson; font-size: 16px">
+				{{ fixedData.data.length }} 個</span
+			>項目
+		</el-divider>
 		<ul>
-			<li v-for="item in fixedData.data">{{ item }}</li>
+			<li v-for="item in fixedData.data">
+				<el-tag size="large" effect="plain">{{ item }}</el-tag>
+			</li>
 		</ul>
 
 		<el-divider content-position="left">抽獎專區</el-divider>
-		<el-button type="success" style="margin: 3%" @click="drawLots"
-			>抽我R！</el-button
-		>
-		<div class="twoCard">
-			<el-card style="margin-right: 2%">
-				<template #header>
-					<div class="card-header">
-						<span>尚未抽出</span>
-					</div>
-				</template>
-				<p
-					v-for="(item, key) in listOne.data"
-					:key="item"
-					v-show="listOne.data.length !== 0"
-				>
-					<span>{{ key + 1 }}、</span>
-					<span> {{ item }}</span>
-				</p>
-				<p v-show="listOne.data.length === 0">已抽完！</p>
-				<template #footer>剩餘數量：{{ listOne.data.length }}</template>
-			</el-card>
-			<el-card>
-				<template #header>
-					<div class="card-header">
-						<span>已抽出</span>
-					</div>
-				</template>
-				<p v-for="(item2, key) in listTwo.data" :key="key">
-					<span>{{ key + 1 }}、</span>
-					<span> {{ item2 }}</span>
-				</p>
-				<template #footer>抽出數量：{{ listTwo.data.length }}</template>
-			</el-card>
+		<div v-show="fixedData.data.length !== 0">
+			<el-button type="success" style="margin: 3%" @click="drawLots"
+				>抽我R！</el-button
+			>
+			<div class="twoCard">
+				<el-card style="margin-right: 2%">
+					<template #header>
+						<div class="card-header">
+							<span>尚未抽出</span>
+						</div>
+					</template>
+					<p
+						v-for="(item, key) in listOne.data"
+						:key="item"
+						v-show="listOne.data.length !== 0"
+					>
+						<span>{{ key + 1 }}、</span>
+						<span> {{ item }}</span>
+					</p>
+					<p v-show="listOne.data.length === 0">已抽完！</p>
+					<template #footer>剩餘數量：{{ listOne.data.length }}</template>
+				</el-card>
+				<el-card>
+					<template #header>
+						<div class="card-header">
+							<span>已抽出</span>
+						</div>
+					</template>
+					<p v-for="(item2, key) in listTwo.data" :key="key">
+						<span>{{ key + 1 }}、</span>
+						<span> {{ item2 }}</span>
+					</p>
+					<template #footer>抽出數量：{{ listTwo.data.length }}</template>
+				</el-card>
+			</div>
 		</div>
 	</div>
 </template>
@@ -153,11 +162,12 @@
 	ul {
 		display: flex;
 		li {
-			background-color: #ecfaf9;
-			margin: 1%;
-			padding: 1% 4%;
-			border-radius: 14px;
-			text-align: center;
+			padding-right: 2%;
+			// background-color: #ecfaf9;
+			// margin: 1%;
+			// padding: 1% 4%;
+			// border-radius: 14px;
+			// text-align: center;
 		}
 	}
 	.twoCard {

@@ -166,12 +166,9 @@
 	}
 </script>
 <style lang="scss">
-	body {
-		// background-color: black;
-		color: white;
-	}
 	.calendar {
 		background: navy;
+		color: white;
 		border: 1px solid #ccc;
 		border-radius: 15px;
 		width: 400px;
