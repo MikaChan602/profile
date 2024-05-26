@@ -76,7 +76,7 @@
 		// 判斷是不是leap year
 		const isLeapYear = year.value % 4;
 		if (isLeapYear === 0) {
-			console.log("整除", year.value);
+			// console.log("整除", year.value);
 			monthDays = leapYear[month.value]; // 本月有幾天？
 			// 前一個月有幾天？
 			if (month.value == 0) {
@@ -85,7 +85,7 @@
 				preMonthDays = leapYear[month.value - 1];
 			}
 		} else {
-			console.log("不整除", year.value);
+			// console.log("不整除", year.value);
 			const preMonthValue = month.value - 1 || 0;
 			monthDays = normalYear[month.value]; // 本月有幾天？
 			// 前一個月有幾天？
@@ -128,15 +128,15 @@
 					info: preDate,
 					class: "gray",
 				});
-				console.log(innerLastMonthDay);
+				// console.log(innerLastMonthDay);
 				innerLastMonthDay--;
 			}
-			console.log("arr", dayArr);
+			// console.log("arr", dayArr);
 		}
 
 		// 第三步：算下去下個月補足最後一個禮拜使其滿足七天
 		if (whatLastDay !== 6) {
-			console.log("what last day", whatLastDay);
+			// console.log("what last day", whatLastDay);
 			let day = 1;
 			// +1 是因為自己本身不能算
 			let innerYear = year.value;
@@ -158,11 +158,11 @@
 		for (let i = 0; i < dayArr.length; i += 7) {
 			dateArr.data.push(dayArr.slice(i, i + 7));
 		}
-		console.log(dateArr.data);
+		// console.log(dateArr.data);
 	});
 	function showDate(day) {
 		thisDate.value = day;
-		console.log(day);
+		// console.log(day);
 	}
 </script>
 <style lang="scss">
