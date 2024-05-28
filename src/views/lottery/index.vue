@@ -19,6 +19,7 @@
 					>以此列表開始抽獎</el-button
 				>
 				<el-button type="danger" @click="clear">清除重填</el-button>
+				<el-button type="success" @click="handleReset">下面重抽</el-button>
 			</div>
 		</el-form>
 		<el-divider content-position="left"
@@ -141,6 +142,19 @@
 		// 處理localStorage
 		localStorage.setItem("listOne", JSON.stringify(listOne.data));
 		localStorage.setItem("listTwo", JSON.stringify(listTwo.data));
+	}
+
+	function handleReset() {
+		console.log("重抽");
+		// 處理資料
+		listOne.data = [...listOne.data, ...listTwo.data];
+		listTwo.data = [];
+		console.log("listone", listOne.data);
+		console.log("listtwo", listTwo.data);
+		// 處理localStorage
+		localStorage.setItem("listOne", JSON.stringify(listOne.data));
+		localStorage.setItem("listTwo", JSON.stringify(listTwo.data));
+		ElMessage.success("可以重抽了唷！");
 	}
 
 	onMounted(() => {
