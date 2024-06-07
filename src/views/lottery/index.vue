@@ -1,76 +1,94 @@
 <template>
-	<div>
-		<el-form label-width="auto" style="max-width: 600px">
-			<div>
-				<el-form-item label="請輸入獎品" v-show="showInput">
+	<div class="wrapper">
+		<el-form label-width="auto">
+			<div v-show="showInput">
+				<div class="title">
+					<span class="text">請輸入預進行亂數抽獎的資料</span>
+					<el-button
+						class="start"
+						type="primary"
+						plain
+						@click="startLottery"
+						:disabled="fixedData.data.length !== 0"
+						>以此列表開始抽獎</el-button
+					>
+				</div>
+
+				<el-form-item>
 					<el-input
 						type="textarea"
-						:autosize="{ minRows: 2, maxRows: 4 }"
+						:autosize="{ minRows: 4, maxRows: 10 }"
 						placeholder="請輸入獎品，可使用,;作區隔"
 						v-model="lotteryStr"
 					/>
 				</el-form-item>
 			</div>
-			<div>
-				<el-button
-					type="primary"
-					@click="startLottery"
-					:disabled="fixedData.data.length !== 0"
-					>以此列表開始抽獎</el-button
-				>
-				<el-button type="danger" @click="clear">清除重填</el-button>
-				<el-button type="success" @click="handleReset">下面重抽</el-button>
+			<!-- 抽獎畫面執行區塊 -->
+			<div v-show="showInput === false">
+				<div class="title">
+					<span class="text">亂數抽獎資料</span>
+					<div>
+						<el-button type="danger" plain @click="clear">清除重填</el-button>
+						<el-button type="success" plain @click="handleReset"
+							>下面重抽</el-button
+						>
+					</div>
+				</div>
+				<div class="listArea">
+					<h3>
+						列表結果 : 共
+						<span style="color: crimson; font-size: 16px">
+							{{ fixedData.data.length }} 個</span
+						>項目
+					</h3>
+					<ul>
+						<li v-for="item in fixedData.data">
+							{{ item }}
+						</li>
+					</ul>
+				</div>
+
+				<div class="title">
+					<span class="text">抽獎專區</span>
+					<el-button type="success" style="margin: 3%" @click="drawLots"
+						>抽我R！</el-button
+					>
+				</div>
+				<div v-show="fixedData.data.length !== 0">
+					<div class="twoCard">
+						<el-card style="margin-right: 2%">
+							<template #header>
+								<div class="card-header">
+									<span>尚未抽出</span>
+								</div>
+							</template>
+							<p
+								v-for="(item, key) in listOne.data"
+								:key="item"
+								v-show="listOne.data.length !== 0"
+							>
+								<span>{{ key + 1 }}、</span>
+								<span> {{ item }}</span>
+							</p>
+							<p v-show="listOne.data.length === 0">已抽完！</p>
+							<template #footer>剩餘數量：{{ listOne.data.length }}</template>
+						</el-card>
+						<el-card>
+							<template #header>
+								<div class="card-header">
+									<span>已抽出</span>
+								</div>
+							</template>
+							<p v-for="(item2, key) in listTwo.data" :key="key">
+								<span>{{ key + 1 }}、</span>
+								<span> {{ item2 }}</span>
+							</p>
+							<template #footer>抽出數量：{{ listTwo.data.length }}</template>
+						</el-card>
+					</div>
+				</div>
 			</div>
 		</el-form>
-		<el-divider content-position="left"
-			>列表結果 :共
-			<span style="color: crimson; font-size: 16px">
-				{{ fixedData.data.length }} 個</span
-			>項目
-		</el-divider>
-		<ul>
-			<li v-for="item in fixedData.data">
-				<el-tag size="large" effect="plain">{{ item }}</el-tag>
-			</li>
-		</ul>
-
-		<el-divider content-position="left">抽獎專區</el-divider>
-		<div v-show="fixedData.data.length !== 0">
-			<el-button type="success" style="margin: 3%" @click="drawLots"
-				>抽我R！</el-button
-			>
-			<div class="twoCard">
-				<el-card style="margin-right: 2%">
-					<template #header>
-						<div class="card-header">
-							<span>尚未抽出</span>
-						</div>
-					</template>
-					<p
-						v-for="(item, key) in listOne.data"
-						:key="item"
-						v-show="listOne.data.length !== 0"
-					>
-						<span>{{ key + 1 }}、</span>
-						<span> {{ item }}</span>
-					</p>
-					<p v-show="listOne.data.length === 0">已抽完！</p>
-					<template #footer>剩餘數量：{{ listOne.data.length }}</template>
-				</el-card>
-				<el-card>
-					<template #header>
-						<div class="card-header">
-							<span>已抽出</span>
-						</div>
-					</template>
-					<p v-for="(item2, key) in listTwo.data" :key="key">
-						<span>{{ key + 1 }}、</span>
-						<span> {{ item2 }}</span>
-					</p>
-					<template #footer>抽出數量：{{ listTwo.data.length }}</template>
-				</el-card>
-			</div>
-		</div>
 	</div>
 </template>
 <script setup>
@@ -107,6 +125,7 @@
 	}
 	/** 清除資料*/
 	function clear() {
+		// TODO:追加防呆
 		// 清除local storage
 		localStorage.setItem("listTwo", JSON.stringify([]));
 		localStorage.setItem("listOne", JSON.stringify([]));
@@ -173,21 +192,54 @@
 	});
 </script>
 <style scoped lang="scss">
-	ul {
+
+	.wrapper {
+		width: 1200px;
+		max-width: 93%;
+		margin: 0 auto;
+		background-color: #f0e5de;
+		color: #1f4e5f;
+		padding: 3%;
+		border-radius: 14px;
+		box-shadow: 1px 2px 3px rgba(155, 130, 129, 0.5);
+	}
+	.title {
+		width: 100%;
 		display: flex;
-		li {
-			padding-right: 2%;
-			// background-color: #ecfaf9;
-			// margin: 1%;
-			// padding: 1% 4%;
-			// border-radius: 14px;
-			// text-align: center;
+		align-items: center;
+		justify-content: space-between;
+		margin-bottom: 3%;
+		.text {
+			font-weight: 500;
+			font-size: 26px;
+		}
+		.start {
+			margin-left: 3%;
 		}
 	}
 	.twoCard {
-		display: flex;
+		// display: flex;
 		.el-card {
-			width: 600px;
+			max-width: 100%;
 		}
+	}
+	.listArea {
+		background-color: #fffff3;
+		padding: 3%;
+		border-radius: 4px;
+		ul {
+			height: 200px;
+			overflow: scroll;
+			display: flex;
+		li {
+			padding-left: 2%;
+			padding-right: 2%;
+			margin-right: 1%;
+			// background-color: #754f44;
+			// color: #fffff3;
+			// text-align: center;
+			border-radius: 4px;
+		}
+	}
 	}
 </style>

@@ -8,16 +8,10 @@
 		<div>
 			<Menu />
 		</div>
-		<div class="main">
+		<div>
 			<RouterView />
 		</div>
 	</div>
 </template>
 
-<style scoped lang="scss">
-.main{
-	width: 93%;
-	margin: 0 auto;
-	margin-top: 5%;
-}
-</style>
+<style scoped lang="scss"></style>
