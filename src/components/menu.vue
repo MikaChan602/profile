@@ -17,7 +17,19 @@
 	import { reactive } from "vue";
 	import { RouterLink } from "vue-router";
 	import router from "../router";
-	const menu = reactive({ data: [...router.options.routes] });
+	// 過濾掉meta中有隱藏屬性的值
+	const filterRoutes = (routes) => {
+		return routes
+			.filter((route) => !route.meta?.hidden)
+			.map((route) => {
+				if (route.children) {
+					route.children = filterRoutes(route.children);
+				}
+				return route;
+			});
+	};
+	const filteredRoutes = filterRoutes(router.options.routes);
+	const menu = reactive({ data: filteredRoutes });
 </script>
 <style lang="scss" scoped>
 	a {
