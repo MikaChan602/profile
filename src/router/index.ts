@@ -15,7 +15,7 @@ const router = createRouter({
           name: 'lottery',
           component: () => import('../views/lottery/index.vue'),
           meta: {
-            hidden: true,
+            hidden: false,
           },
         
         },
@@ -42,12 +42,12 @@ const router = createRouter({
         },
       ]
     },
-    {
-      path:'/JSundergroundCastle',
-      name:'JS地下城',
-      meta: {
-        hidden: true,
-      },
+    // {
+      // path:'/JSundergroundCastle',
+      // name:'JS地下城',
+      // meta: {
+      //   hidden: true,
+      // },
       // children:[
       //   {
       //     path: '/lottery',
@@ -60,7 +60,7 @@ const router = createRouter({
       //     component: () => import('../views/calendar/index.vue')
       //   }
       // ]      
-    }
+    // }
   ]
 })
 

@@ -1,100 +1,120 @@
 <template>
-	<div class="wrapper">
-		<el-form label-width="auto">
-			<div v-show="showInput">
-				<div class="title">
-					<span class="text">請輸入預進行亂數抽獎的資料</span>
-					<el-button
-						class="start"
+	<div>
+		<div class="wrapper" style="margin-top: 15px; color: #3f4b3b">
+			<h1>抽獎專區</h1>
+			<el-divider border-style="dashed" style="margin-top: 15px" />
+		</div>
+		<div class="wrapper">
+			<el-row :gutter="20">
+				<el-col :span="8" :xs="24" style="margin-top: 5px">
+					<div class="list">
+						<div class="title">抽獎清單 {{ fixedData.data.length }}</div>
+						<div class="content">
+							<ul>
+								<li v-for="item in fixedData.data">
+									{{ item }}
+								</li>
+							</ul>
+							<div class="none">
+								<span v-show="fixedData.data.length === 0">無資料</span>
+							</div>
+						</div>
+					</div>
+				</el-col>
+				<el-col :span="8" :xs="24" style="margin-top: 5px">
+					<div class="list">
+						<div class="title">抽獎中 {{ listOne.data.length }}</div>
+						<div class="content">
+							<ul>
+								<li v-for="item in listOne.data">
+									{{ item }}
+								</li>
+							</ul>
+							<div class="none">
+								<span v-show="listOne.data.length === 0">無資料</span>
+							</div>
+						</div>
+					</div>
+				</el-col>
+				<el-col :span="8" :xs="24" style="margin-top: 5px">
+					<div class="list">
+						<div class="title">抽獎結果 {{ listTwo.data.length }}</div>
+						<div class="content">
+							<ul>
+								<li v-for="item in listTwo.data">
+									{{ item }}
+								</li>
+							</ul>
+							<div class="none">
+								<span v-show="listTwo.data.length === 0">無資料</span>
+							</div>
+						</div>
+					</div>
+				</el-col>
+			</el-row>
+		</div>
+		<div
+			class="wrapper"
+			v-show="fixedData.data.length == 0"
+			style="margin-top: 2%"
+		>
+			<el-divider border-style="dashed" content-position="left">
+				請輸入抽獎資料
+			</el-divider>
+			<el-row :gutter="20">
+				<el-col :span="20" :xs="24" style="margin-top: 5px">
+					<el-form-item>
+						<el-input
+							type="textarea"
+							:autosize="{ minRows: 2, maxRows: 5 }"
+							placeholder="請輸入獎品，可使用,;作區隔"
+							v-model="lotteryStr"
+							:disabled="fixedData.data.length !== 0"
+						/>
+					</el-form-item>
+				</el-col>
+				<el-col
+					:span="4"
+					:xs="24"
+					style="display: flex; text-align: right; align-items: center"
+					><el-button
 						type="primary"
 						plain
 						@click="startLottery"
 						:disabled="fixedData.data.length !== 0"
-						>以此列表開始抽獎</el-button
+						>確定</el-button
 					>
-				</div>
-
-				<el-form-item>
-					<el-input
-						type="textarea"
-						:autosize="{ minRows: 4, maxRows: 10 }"
-						placeholder="請輸入獎品，可使用,;作區隔"
-						v-model="lotteryStr"
-					/>
-				</el-form-item>
+				</el-col>
+			</el-row>
+		</div>
+		<div class="wrapper" style="margin-top: 2%; margin-bottom: 2%">
+			<el-divider />
+			<div class="buttons">
+				<el-row :gutter="20">
+					<el-col :span="8">
+						<el-button @click="clear" plain type="danger" class="btn">
+							全部清除
+						</el-button>
+					</el-col>
+					<el-col :span="8">
+						<el-button @click="drawLots" plain type="primary" class="btn">
+							抽獎
+						</el-button>
+					</el-col>
+					<el-col :span="8">
+						<el-button @click="handleReset" plain type="success" class="btn">
+							重抽
+						</el-button>
+					</el-col>
+				</el-row>
 			</div>
-			<!-- 抽獎畫面執行區塊 -->
-			<div v-show="showInput === false">
-				<div class="title">
-					<span class="text">亂數抽獎資料</span>
-					<div>
-						<el-button type="danger" plain @click="clear">清除重填</el-button>
-						<el-button type="success" plain @click="handleReset"
-							>下面重抽</el-button
-						>
-					</div>
-				</div>
-				<div class="listArea">
-					<h3>
-						列表結果 : 共
-						<span style="color: crimson; font-size: 16px">
-							{{ fixedData.data.length }} 個</span
-						>項目
-					</h3>
-					<ul>
-						<li v-for="item in fixedData.data">
-							{{ item }}
-						</li>
-					</ul>
-				</div>
-
-				<div class="title">
-					<span class="text">抽獎專區</span>
-					<el-button type="success" style="margin: 3%" @click="drawLots"
-						>抽我R！</el-button
-					>
-				</div>
-				<div v-show="fixedData.data.length !== 0">
-					<div class="twoCard">
-						<el-card style="margin-right: 2%">
-							<template #header>
-								<div class="card-header">
-									<span>尚未抽出</span>
-								</div>
-							</template>
-							<p
-								v-for="(item, key) in listOne.data"
-								:key="item"
-								v-show="listOne.data.length !== 0"
-							>
-								<span>{{ key + 1 }}、</span>
-								<span> {{ item }}</span>
-							</p>
-							<p v-show="listOne.data.length === 0">已抽完！</p>
-							<template #footer>剩餘數量：{{ listOne.data.length }}</template>
-						</el-card>
-						<el-card>
-							<template #header>
-								<div class="card-header">
-									<span>已抽出</span>
-								</div>
-							</template>
-							<p v-for="(item2, key) in listTwo.data" :key="key">
-								<span>{{ key + 1 }}、</span>
-								<span> {{ item2 }}</span>
-							</p>
-							<template #footer>抽出數量：{{ listTwo.data.length }}</template>
-						</el-card>
-					</div>
-				</div>
-			</div>
-		</el-form>
+		</div>
 	</div>
 </template>
 <script setup>
 	import { onMounted, reactive, ref, watchEffect } from "vue";
 	import { splitStr } from "../../utils/utils";
-	import { ElMessage } from "element-plus";
+	import { ElMessage, ElMessageBox } from "element-plus";
 	const lotteryStr = ref("");
 	const lotteryList = reactive({ data: [] });
 	const fixedData = reactive({ data: [] });
@@ -121,26 +141,49 @@
 		// 存 local storage
 		localStorage.setItem("listOne", JSON.stringify(listOne.data));
 		localStorage.setItem("allData", JSON.stringify(fixedData.data));
-		console.log(localStorage.getItem("allData"));
+		// console.log(localStorage.getItem("allData"));
 	}
 	/** 清除資料*/
 	function clear() {
-		// TODO:追加防呆
-		// 清除local storage
-		localStorage.setItem("listTwo", JSON.stringify([]));
-		localStorage.setItem("listOne", JSON.stringify([]));
-		localStorage.setItem("allData", JSON.stringify([]));
+		ElMessageBox.confirm(
+			"如確定清除資料需重新填寫資料，確定要清除嗎？",
+			"Warning",
+			{
+				confirmButtonText: "確定",
+				cancelButtonText: "取消",
+				type: "warning",
+				center: true,
+			}
+		)
+			.then(() => {
+				ElMessage({
+					type: "success",
+					message: "已清除",
+				});
 
-		// 重製上方搜尋
-		lotteryStr.value = "";
-		lotteryList.data = [];
-		// 重製陣列
-		fixedData.data = [];
-		listOne.data = [];
-		listTwo.data = [];
-		// 重製狀態
-		showInput.value = true;
-		btnDisable.value = false;
+				// TODO:追加防呆
+				// 清除local storage
+				localStorage.setItem("listTwo", JSON.stringify([]));
+				localStorage.setItem("listOne", JSON.stringify([]));
+				localStorage.setItem("allData", JSON.stringify([]));
+
+				// 重製上方搜尋
+				lotteryStr.value = "";
+				lotteryList.data = [];
+				// 重製陣列
+				fixedData.data = [];
+				listOne.data = [];
+				listTwo.data = [];
+				// 重製狀態
+				showInput.value = true;
+				btnDisable.value = false;
+			})
+			.catch(() => {
+				ElMessage({
+					type: "info",
+					message: "取消",
+				});
+			});
 	}
 
 	/** 抽籤 */
@@ -163,17 +206,36 @@
 		localStorage.setItem("listTwo", JSON.stringify(listTwo.data));
 	}
 
+	/** 既有列表重抽 */
 	function handleReset() {
 		console.log("重抽");
-		// 處理資料
-		listOne.data = [...listOne.data, ...listTwo.data];
-		listTwo.data = [];
-		console.log("listone", listOne.data);
-		console.log("listtwo", listTwo.data);
-		// 處理localStorage
-		localStorage.setItem("listOne", JSON.stringify(listOne.data));
-		localStorage.setItem("listTwo", JSON.stringify(listTwo.data));
-		ElMessage.success("可以重抽了唷！");
+		ElMessageBox.confirm("將重設抽獎中項目，確定重製?", "Warning", {
+			confirmButtonText: "確定",
+			cancelButtonText: "取消",
+			type: "warning",
+			center: true,
+		})
+			.then(() => {
+				ElMessage({
+					type: "success",
+					message: "已重製",
+				});
+				// 處理資料
+				listOne.data = [...listOne.data, ...listTwo.data];
+				listTwo.data = [];
+				console.log("listone", listOne.data);
+				console.log("listtwo", listTwo.data);
+				// 處理localStorage
+				localStorage.setItem("listOne", JSON.stringify(listOne.data));
+				localStorage.setItem("listTwo", JSON.stringify(listTwo.data));
+				ElMessage.success("可以重抽了唷！");
+			})
+			.catch(() => {
+				ElMessage({
+					type: "info",
+					message: "取消",
+				});
+			});
 	}
 
 	onMounted(() => {
@@ -192,54 +254,67 @@
 	});
 </script>
 <style scoped lang="scss">
+	// new design
+	.list {
+		border: 1px solid #3f4b3b;
+		border-radius: 4px;
+		box-shadow: 2px 2px 2px rgba(63, 75, 59, 0.3);
+		.title {
+			font-size: 16px;
+			font-weight: 590;
+			color: #44633f;
+			border-bottom: 1px solid #3f4b3b;
+			padding: 10px;
+		}
+		.content {
+			min-height: 300px;
+			max-height: 300px;
+			overflow-y: auto;
+			padding: 10px;
+		}
+	}
 
-	.wrapper {
-		width: 1200px;
+	.buttons {
+		text-align: center;
 		max-width: 93%;
 		margin: 0 auto;
-		background-color: #f0e5de;
-		color: #1f4e5f;
-		padding: 3%;
-		border-radius: 14px;
-		box-shadow: 1px 2px 3px rgba(155, 130, 129, 0.5);
 	}
-	.title {
-		width: 100%;
+
+	.btn {
+		width: 180px;
+		height: 50px;
+		font-size: 16px;
+		font-weight: 700;
+		border-radius: 12px;
+	}
+
+	.wrapper {
+		max-width: 93%;
+		margin: 0 auto;
+	}
+	li {
+		height: 35px;
+		line-height: 35px;
+		padding-left: 20px;
+		background-color: rgb(211 212 210 / 40%);
+		color: rgba(63, 75, 59);
+		margin-bottom: 10px;
+		border-radius: 10px;
+		font-size: 14px;
+		margin-left: 0px;
+	}
+	ul {
+		padding-left: 0px;
+	}
+	.none{
 		display: flex;
 		align-items: center;
-		justify-content: space-between;
-		margin-bottom: 3%;
-		.text {
-			font-weight: 500;
-			font-size: 26px;
+		height: 250px;
+		span{
+			margin: auto;
+			font-size: 18px;
+			font-weight: 390;
+			color: rgba(63, 75, 59);
 		}
-		.start {
-			margin-left: 3%;
-		}
-	}
-	.twoCard {
-		// display: flex;
-		.el-card {
-			max-width: 100%;
-		}
-	}
-	.listArea {
-		background-color: #fffff3;
-		padding: 3%;
-		border-radius: 4px;
-		ul {
-			height: 200px;
-			overflow: scroll;
-			display: flex;
-		li {
-			padding-left: 2%;
-			padding-right: 2%;
-			margin-right: 1%;
-			// background-color: #754f44;
-			// color: #fffff3;
-			// text-align: center;
-			border-radius: 4px;
-		}
-	}
 	}
 </style>
