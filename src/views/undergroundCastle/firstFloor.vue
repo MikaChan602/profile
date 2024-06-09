@@ -3,6 +3,7 @@
 	<div class="wrapper">
 		<div class="clock">
 			<div class="circle">
+				<div class="centre"></div>
 				<!-- 好難寫的樣式區塊 -->
 				<div
 					class="outerNum transNum"
@@ -23,19 +24,52 @@
 					</span>
 				</div>
 				<!-- 指針區塊 -->
-				<div class="hour">
+				<div class="hour" :style="{ transform: 'rotate(' + hour + 'deg)' }">
 					<div class="decoration"></div>
 				</div>
-				<div class="minute"></div>
-				<div class="second"></div>
+				<div class="minute" :style="{ transform: 'rotate(' + minute + 'deg)' }">
+					<div class="decoration"></div>
+					<div class="point"></div>
+				</div>
+				<div class="second" :style="{ transform: 'rotate(' + second + 'deg)' }">
+					<div class="line one"></div>
+					<div class="line two"></div>
+					<div class="line three"></div>
+					<div class="line four"></div>
+					<div class="line five"></div>
+					<div class="circlePoint">
+						<div class="innerPoint"></div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
 </template>
 <script setup>
+	import { ref, onMounted } from "vue";
 	const range = (start, end) => {
 		return Array.from({ length: end - start + 1 }, (_, i) => i + start);
 	};
+
+	const hour = ref(0);
+	const minute = ref(0);
+	const second = ref(0);
+
+	onMounted(() => {
+		const interval = setInterval(() => {
+			const date = new Date();
+			minute.value = date.getMinutes() * 6;
+			// 每一分鐘是6度
+			second.value = date.getSeconds() * 6;
+			// 每秒鐘是6度
+			hour.value = ((date.getHours() % 12) / 12) * 360 + minute.value / 12;
+			// 1. 先將24小時轉12小時制
+			// 2. 除以12算出一小時度數
+			// 3. 再乘上度數算出每小時度數 ＋ 分鐘數走的度數，但度數要再除以12
+			// 因為一分鐘走一圈有12個單位，要算出分針走一個單位要移動多少度數
+			// console.log(minute.value, second.value);
+		}, 1000);
+	});
 </script>
 <style lang="scss" scoped>
 	.wrapper {
@@ -139,16 +173,122 @@
 				translate(0, -125px) rotate(90deg);
 		}
 	}
+	/** 圓心 */
+	.centre {
+		min-width: 1px;
+		min-height: 1px;
+		background-color: red;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
 	/** 指針 */
 	.hour {
+		// display: none;
+		position: absolute;
 		background-color: #fff;
-		width: 5px;
-		height: 50px;
-		transform: translate(-50%, -50%);
+		width: 7px;
+		height: 70px;
+		transform-origin: bottom center;
+		top: 85px;
+		left: 151px;
 		.decoration {
+			position: absolute;
+			width: 3px;
+			height: 20px;
+			background-color: #243311;
+			left: 2px;
+			top: 2px;
+		}
+	}
+	.minute {
+		// display: none;
+		position: absolute;
+		background-color: #ff7601;
+		width: 8px;
+		height: 100px;
+		border-radius: 20px;
+		transform-origin: bottom center;
+		top: 55px;
+		left: 151px;
+		z-index: 3;
+		.decoration {
+			position: absolute;
 			width: 1px;
-			height: 15px;
-		
+			height: 40px;
+			background-color: #fff;
+			left: 4px;
+			bottom: 2px;
+		}
+		.point {
+			position: absolute;
+			height: 5px;
+			width: 5px;
+			background-color: #fff;
+			border-radius: 50%;
+			bottom: 2px;
+			left: 2px;
+		}
+	}
+	.second {
+		position: absolute;
+		width: 3px;
+		height: 100px;
+		top: 55px;
+		left: 154px;
+		transform-origin: bottom center;
+		background-color: none;
+		display: flex;
+		.line {
+			background-color: #affc01;
+			width: 1px;
+			position: absolute;
+			z-index: 2;
+			&.one {
+				height: 40px;
+				bottom: 0px;
+			}
+			&.two {
+				height: 10px;
+				bottom: 37px;
+				left: -5px;
+				rotate: 105deg;
+			}
+			&.three {
+				height: 35px;
+				bottom: 39px;
+				left: 2px;
+				rotate: 40deg;
+			}
+			&.four {
+				height: 15px;
+				bottom: 66px;
+				left: 6px;
+				rotate: 119deg;
+			}
+			&.five {
+				height: 42px;
+				bottom: 78px;
+			}
+		}
+		.circlePoint {
+			position: absolute;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 10px;
+			height: 10px;
+			border-radius: 50%;
+			border: 1px solid #affc01;
+			// background-color: #affc01;
+			left: -5px;
+			bottom: 120px;
+			.innerPoint {
+				background-color: #affc01;
+				width: 4px;
+				height: 4px;
+				border-radius: 50%;
+			}
 		}
 	}
 </style>
