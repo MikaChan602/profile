@@ -29,6 +29,9 @@ const router = createRouter({
     {
       path:'/animations',
       name:'動畫',
+      meta: {
+        hidden: true,
+      },
       children:[
         {
           path: '/buttons',
@@ -53,6 +56,22 @@ const router = createRouter({
           path: '/groundFloor',
           name: '第一層',
           component: () => import('../views/undergroundCastle/groundFloor.vue')
+        },
+        {
+          path: '/firstFloor',
+          name: '第二層',
+          component: () => import('../views/undergroundCastle/firstFloor.vue'),
+          meta: {
+            hidden: true,
+          },
+        },
+        {
+          path: '/secondFloor',
+          name: '第三層',
+          component: () => import('../views/undergroundCastle/secondFloor.vue'),
+          meta: {
+            hidden: true,
+          },
         },
       ]      
     }
