@@ -12,7 +12,7 @@ const router = createRouter({
       children:[
         {
           path: '/lottery',
-          name: 'lottery',
+          name: '抽獎',
           component: () => import('../views/lottery/index.vue'),
           meta: {
             hidden: false,
@@ -42,25 +42,20 @@ const router = createRouter({
         },
       ]
     },
-    // {
-      // path:'/JSundergroundCastle',
-      // name:'JS地下城',
-      // meta: {
-      //   hidden: true,
-      // },
-      // children:[
-      //   {
-      //     path: '/lottery',
-      //     name: 'lottery',
-      //     component: () => import('../views/lottery/index.vue')
-      //   },
-      //   {
-      //     path: '/calendar',
-      //     name: '日曆',
-      //     component: () => import('../views/calendar/index.vue')
-      //   }
-      // ]      
-    // }
+    {
+      path:'/undergroundCastle',
+      name:'JS地下城',
+      meta: {
+        hidden: false,
+      },
+      children:[
+        {
+          path: '/groundFloor',
+          name: '第一層',
+          component: () => import('../views/undergroundCastle/groundFloor.vue')
+        },
+      ]      
+    }
   ]
 })
 

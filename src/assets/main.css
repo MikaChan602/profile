@@ -1,6 +1,7 @@
 @import './base.css';
 
 ul{
+  padding-left: 0px;
   li{
     list-style: none;
     padding: 0%;
