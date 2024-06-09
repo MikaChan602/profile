@@ -165,7 +165,7 @@
 		// console.log(day);
 	}
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 	.calendar {
 		background: navy;
 		color: white;
@@ -198,7 +198,7 @@
 	.circle {
 		text-align: center;
 		width: 30px;
-        height: 30px;
+		height: 30px;
 		padding: 1%;
 		border-radius: 50% 50%;
 		cursor: pointer;
@@ -207,7 +207,7 @@
 			color: navy;
 		}
 	}
-    h1{
-        color: navy;
-    }
+	h1 {
+		color: navy;
+	}
 </style>
