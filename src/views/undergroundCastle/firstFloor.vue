@@ -84,8 +84,8 @@
 	}
 	.clock {
 		background-color: #3d5a45;
-		width: 350px;
-		height: 350px;
+		width: 355px;
+		height: 355px;
 		border-radius: 40px;
 
 		display: flex;
@@ -95,8 +95,8 @@
 			border-radius: 50%;
 			border: 5px solid #243311;
 			background-color: #293b29;
-			width: 320px;
-			height: 320px;
+			width: 325px;
+			height: 325px;
 			position: relative;
 			display: flex;
 			align-items: center;
@@ -134,7 +134,7 @@
 			top: 50%;
 			left: 50%;
 			transform: translate(-50%, -50%) rotate(calc(var(--i) * (360deg / 12)))
-				translate(0, -105px);
+				translate(0, -100px);
 			font-size: 14px;
 			text-align: center;
 			span {
@@ -145,7 +145,7 @@
 		.hourLine {
 			background-color: #d56b08;
 			min-width: 2px;
-			min-height: 20px;
+			min-height: 16px;
 			position: absolute;
 			top: 50%;
 			left: 50%;
@@ -227,14 +227,16 @@
 		border-radius: 20px;
 		transform-origin: bottom center;
 		top: 67px;
-		left: 151px;
+		left: 150px;
 		z-index: 3;
+        display: flex;
+        z-index: 3;
 		.decoration {
 			position: absolute;
 			width: 1px;
 			height: 40px;
 			background-color: #fff;
-			left: 4px;
+			left: 3px;
 			bottom: 2px;
 		}
 		.point {
