@@ -206,8 +206,8 @@
 		width: 7px;
 		height: 70px;
 		transform-origin: bottom center;
-		top: 85px;
-		left: 151px;
+		top: 87px;
+		left: 152px;
 		transform: translateX(-50%) rotate(45deg);
 		.decoration {
 			position: absolute;
@@ -229,8 +229,8 @@
 		top: 67px;
 		left: 150px;
 		z-index: 3;
-        display: flex;
-        z-index: 3;
+		display: flex;
+		z-index: 3;
 		.decoration {
 			position: absolute;
 			width: 1px;
@@ -246,7 +246,7 @@
 			background-color: #fff;
 			border-radius: 50%;
 			bottom: 2px;
-			left: 2px;
+			left: 1px;
 		}
 	}
 	.second {
@@ -256,8 +256,8 @@
 		justify-content: center;
 		width: 1px;
 		height: 100px;
-		top: 55px;
-		left: 154px;
+		top: 56px;
+		left: 157px;
 		transform-origin: bottom center;
 		z-index: 5;
 		// display: flex;
