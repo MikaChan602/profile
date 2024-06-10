@@ -14,7 +14,7 @@
 						{{ n }}
 					</span>
 				</div>
-				<div class="dot" :style="`--i : ` + n" v-for="n in 72">.</div>
+				<div class="dot" :style="`--i : ` + n" v-for="n in 60">.</div>
 				<div class="hourLine" :style="`--i : ` + n" v-for="n in 12"></div>
 				<div class="star1" :style="`--i : ` + n" v-for="n in 12"></div>
 				<div class="star2" :style="`--i : ` + n" v-for="n in 12"></div>
@@ -23,7 +23,9 @@
 						{{ n }}
 					</span>
 				</div>
-				<!-- 指針區塊 -->
+			</div>
+			<!-- 指針區塊 -->
+			<div class="hands">
 				<div class="hour" :style="{ transform: 'rotate(' + hour + 'deg)' }">
 					<div class="decoration"></div>
 				</div>
@@ -108,7 +110,7 @@
 			position: absolute;
 			top: 50%;
 			left: 50%;
-			transform: translate(-50%, -50%) rotate(calc(var(--i) * (360deg / 72)))
+			transform: translate(-50%, -50%) rotate(calc(var(--i) * (360deg / 60)))
 				translate(0, -125px);
 		}
 
@@ -159,7 +161,7 @@
 			top: 50%;
 			left: 50%;
 			transform: translate(-50%, -50%) rotate(calc(var(--i) * 30deg + 15deg))
-				translate(0, -125px);
+				translate(0, -134px);
 		}
 		.star2 {
 			background-color: #d56b08;
@@ -170,28 +172,43 @@
 			top: 50%;
 			left: 50%;
 			transform: translate(-50%, -50%) rotate(calc(var(--i) * 30deg + 15deg))
-				translate(0, -125px) rotate(90deg);
+				translate(0, -134px) rotate(90deg);
 		}
 	}
-	/** 圓心 */
-	.centre {
-		min-width: 1px;
-		min-height: 1px;
-		background-color: red;
+
+	.hands {
+		// border: 1px solid red;
+		position: absolute;
+		width: 313px;
+		height: 313px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 	}
+	/** 圓心 */
+	.centre {
+		min-width: 2px;
+		min-height: 2px;
+		// background-color: red;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		z-index: 4;
+	}
 	/** 指針 */
 	.hour {
-		// display: none;
 		position: absolute;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		// display: none;
 		background-color: #fff;
 		width: 7px;
 		height: 70px;
 		transform-origin: bottom center;
 		top: 85px;
 		left: 151px;
+		transform: translateX(-50%) rotate(45deg);
 		.decoration {
 			position: absolute;
 			width: 3px;
@@ -206,10 +223,10 @@
 		position: absolute;
 		background-color: #ff7601;
 		width: 8px;
-		height: 100px;
+		height: 90px;
 		border-radius: 20px;
 		transform-origin: bottom center;
-		top: 55px;
+		top: 67px;
 		left: 151px;
 		z-index: 3;
 		.decoration {
@@ -232,13 +249,17 @@
 	}
 	.second {
 		position: absolute;
-		width: 3px;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 1px;
 		height: 100px;
 		top: 55px;
 		left: 154px;
 		transform-origin: bottom center;
-		background-color: none;
-		display: flex;
+		z-index: 5;
+		// display: flex;
+		// background-color: #affc01;
 		.line {
 			background-color: #affc01;
 			width: 1px;
@@ -251,7 +272,7 @@
 			&.two {
 				height: 10px;
 				bottom: 37px;
-				left: -5px;
+				left: -4px;
 				rotate: 105deg;
 			}
 			&.three {
@@ -268,7 +289,7 @@
 			}
 			&.five {
 				height: 42px;
-				bottom: 78px;
+				bottom: 77px;
 			}
 		}
 		.circlePoint {
