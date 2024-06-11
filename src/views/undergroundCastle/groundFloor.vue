@@ -145,7 +145,6 @@
 		font-weight: bold;
 	}
 	footer {
-		width: 100%;
 		position: relative;
 		top: 0px;
 		bottom: 0;
@@ -158,5 +157,28 @@
 		padding-bottom: 8px;
 		width: 1280px;
 		margin: 0 auto;
+	}
+	@media only screen and (max-width: 1100px) {
+		.wrapper {
+			max-width: 100%;
+			padding: 0%;
+			ul {
+				max-width: 90%;
+				margin: auto;
+				li {
+					max-width: 100%;
+					margin-bottom: 3%;
+				}
+			}
+		}
+		.header {
+			max-width: 93%;
+		}
+		.row {
+			flex-direction: column;
+		}
+		footer {
+			max-width: 100%;
+		}
 	}
 </style>
