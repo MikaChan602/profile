@@ -70,7 +70,7 @@ const router = createRouter({
           name: '第三層',
           component: () => import('../views/undergroundCastle/secondFloor.vue'),
           meta: {
-            hidden: true,
+            hidden: false,
           },
         },
       ]      
