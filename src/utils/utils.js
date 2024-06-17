@@ -5,3 +5,9 @@ export function splitStr(str){
     const newArr = arr.filter(el => el) // 去除陣列中的空字串
     return newArr
 }
+
+/** 千分位 */ 
+export function thousands(num){
+    let comma=/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g
+    return num.toString().replace(comma, ',')
+}

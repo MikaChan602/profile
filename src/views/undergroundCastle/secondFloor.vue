@@ -3,38 +3,38 @@
 	<div class="wrapper">
 		<div class="calculator">
 			<div class="top">
-				<div class="calculation">1,280 x 30 - 200</div>
-				<div class="result">38,200</div>
+				<div class="calculation">{{ combineStr }}</div>
+				<div class="result">{{ thousands(combineStr) }}</div>
 			</div>
 			<div class="keyboard">
 				<ul class="row" style="margin-top: 16px">
-					<li>7</li>
-					<li>8</li>
-					<li>9</li>
+					<li @click="getNumber($event)">7</li>
+					<li @click="getNumber($event)">8</li>
+					<li @click="getNumber($event)">9</li>
 					<li class="btn">÷</li>
 				</ul>
 				<ul class="row">
-					<li>4</li>
-					<li>5</li>
-					<li>6</li>
+					<li @click="getNumber($event)">4</li>
+					<li @click="getNumber($event)">5</li>
+					<li @click="getNumber($event)">6</li>
 					<li class="btn">×</li>
 				</ul>
 				<ul class="row">
-					<li>1</li>
-					<li>2</li>
-					<li>3</li>
+					<li @click="getNumber($event)">1</li>
+					<li @click="getNumber($event)">2</li>
+					<li @click="getNumber($event)">3</li>
 					<li class="btn">÷</li>
 				</ul>
 				<ul class="row">
-					<li>0</li>
-					<li>00</li>
-					<li>.</li>
+					<li @click="getNumber($event)">0</li>
+					<li @click="getNumber($event)">00</li>
+					<li @click="getNumber($event)">.</li>
 					<li class="btn">+</li>
 				</ul>
 				<ul class="row">
-					<li class="AC">AC</li>
+					<li class="AC" @click="combineStr = '0'">AC</li>
 					<li>
-						<div class="btnCancel">⌫</div>
+						<div class="btnCancel" @click="handleDelNum">⌫</div>
 					</li>
 					<li style="width: 50%" class="btn equal">=</li>
 				</ul>
@@ -43,13 +43,46 @@
 	</div>
 </template>
 <script setup>
-	import { ref } from "vue";
-	const number = ref("");
+	import { ref, watchEffect } from "vue";
+	import {thousands} from '@/utils/utils.js'
+	// const number = ref("");
+	const combineStr = ref("0");
+
+	// 組數字
+	const getNumber = ($event) => {
+		const init = combineStr.value.substr(0);
+		// TODO　判斷字串裡面是否有小數點
+		if (init === "0") {
+			combineStr.value = "";
+		}
+		console.log("init", init);
+		const number = $event.target.innerHTML;
+		combineStr.value += number;
+		console.log("number", number);
+		console.log("combineStr", combineStr.value);
+	};
+
+	// 刪除數字
+	const handleDelNum = () => {
+		console.log("delete");
+		const numLen = combineStr.value.length;
+		console.log("length", numLen);
+		if (numLen === 1 && combineStr.value == "0") {
+			return;
+		} else if (numLen === 1 && combineStr.value !== "0") {
+			combineStr.value = "0";
+		} else {
+			combineStr.value = combineStr.value.substring(0, numLen - 1);
+		}
+	};
+
+	
 </script>
 <style lang="scss" scoped>
 	.wrapper {
 		background-color: #e8e8e8;
 		width: 1280px;
+		max-width: 93%;
 		height: 800px;
 		margin: 0 auto;
 		padding-top: 129px;
@@ -59,6 +92,7 @@
 		font-family: "Roboto", sans-serif;
 		font-weight: 400;
 		font-style: normal;
+		user-select: none;
 	}
 	.calculator {
 		background-color: #062145;
@@ -128,6 +162,6 @@
 	}
 	.btnCancel {
 		color: #00c4ff;
-		font-size: 32px;
+		font-size: 26px;
 	}
 </style>
