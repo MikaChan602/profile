@@ -42,6 +42,10 @@
 		</div>
 	</div>
 </template>
+<script setup>
+	import { ref } from "vue";
+	const number = ref("");
+</script>
 <style lang="scss" scoped>
 	.wrapper {
 		background-color: #e8e8e8;
