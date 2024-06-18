@@ -44,22 +44,39 @@
 </template>
 <script setup>
 	import { ref, watchEffect } from "vue";
-	import {thousands} from '@/utils/utils.js'
+	import { thousands } from "@/utils/utils.js";
 	// const number = ref("");
 	const combineStr = ref("0");
 
 	// 組數字
 	const getNumber = ($event) => {
-		const init = combineStr.value.substr(0);
+		const init = combineStr.value.substring(0); // 抓組合值中的第一個值
+		let number = $event.target.innerHTML; // 抓點選的值
 		// TODO　判斷字串裡面是否有小數點
+		const containDot = init.includes(".", 0);
+		console.log("contain", containDot);
+
+		/** 控制number..................................... */
+
+		// 只能一個點
+		if (containDot) {
+			number = ""; // 如果有dot，那不讓dot加上去給他空字串。
+		}
 		if (init === "0") {
 			combineStr.value = "";
-		}
+		} else if (init === "0" && number === "0") {
+			number = "";
+		} 
+		// else if (init === "0" && containDot) {
+		// 	combineStr.value = "0.";
+		// }
 		console.log("init", init);
-		const number = $event.target.innerHTML;
+
 		combineStr.value += number;
 		console.log("number", number);
 		console.log("combineStr", combineStr.value);
+		if (number === "." && containDot) {
+		}
 	};
 
 	// 刪除數字
@@ -75,8 +92,6 @@
 			combineStr.value = combineStr.value.substring(0, numLen - 1);
 		}
 	};
-
-	
 </script>
 <style lang="scss" scoped>
 	.wrapper {
