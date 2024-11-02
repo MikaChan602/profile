@@ -247,7 +247,6 @@
 					message: "已清除",
 				});
 
-				// TODO:追加防呆
 				// 清除local storage
 				localStorage.setItem("listTwo", JSON.stringify([]));
 				localStorage.setItem("listOne", JSON.stringify([]));
@@ -340,23 +339,43 @@
 
 	async function downloadFile() {
 		console.log("showList", showList.value);
+		console.log("欄位", forOwnerParams.disabled);
+		let obj;
+		if (forOwnerParams.disabled) {
+			obj = {
+				name: "Table",
+				ref: "A2", // 表格起始位置
+				columns: [
+					{ name: "序號", width: "20" },
+					{ name: "得獎者", filterButton: true, width: "40" },
+					{ name: "獎品", filterButton: true, width: "100" },
+				],
+				rows: [],
+			};
+			showList.value.forEach((item, key) => {
+				const arr = item.split("-");
+				arr.unshift(key + 1);
+				obj.rows.push(arr);
+				console.log(arr);
+			});
+		} else {
+			obj = {
+				name: "Table",
+				ref: "A2", // 表格起始位置
+				columns: [
+					{ name: "序號", width: "20" },
+					{ name: "獎品", filterButton: true, width: "100" },
+				],
+				rows: [],
+			};
 
-		const obj = {
-			name: "Table",
-			ref: "A1", // 表格起始位置
-			columns: [
-				{ name: "序號", width: "20" },
-				{ name: "得獎者", filterButton: true, width: "40" },
-				{ name: "獎品", filterButton: true, width: "100" },
-			],
-			rows: [],
-		};
-		showList.value.forEach((item, key) => {
-			const arr = item.split("-");
-			arr.unshift(key + 1);
-			obj.rows.push(arr);
-			console.log(arr);
-		});
+			showList.value.forEach((item, key) => {
+				const arr = [item.split("-")[1]];
+				arr.unshift(key + 1);
+				obj.rows.push(arr);
+				console.log(arr);
+			});
+		}
 
 		console.log("obj", obj);
 		// return;
@@ -370,6 +389,7 @@
 		forOwnerParams.disabled = true;
 		localStorage.setItem("forOwnerParams", JSON.stringify(forOwnerParams));
 	}
+
 	/** 用於顯示 */
 	const showList = computed(() => {
 		return fixedData.data.map((_, key) => {

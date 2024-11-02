@@ -1,3 +1,2 @@
 import excelExport from './excelExport'
-
-export {excelExport}
+export {excelExport,excelImport}

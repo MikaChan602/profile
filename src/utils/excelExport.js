@@ -11,20 +11,76 @@ export async function excelExport (obj){
     // 凍結窗格
     sheet.views = [
         {showGridLines: false},
-	    {state: 'frozen', xSplit: 1, ySplit: 1}
+	    {state: 'frozen', xSplit: 1, ySplit: 1},
     ]
+
+    // 設置標籤顏色›    
+    sheet.properties.tabColor = {
+        argb:'FF3D7878', // 設置標籤顏色
+        defaultColWidth:150,
+
+    }
+    // 針對所有表格設置一樣的寬度
+    // sheet.properties.defaultColWidth = 30
+
+    // ? 個別設置寬度
+    sheet.getColumn(1).width = 10
+    sheet.getColumn(2).eachCell((cell, rowNumber) => {
+        if (rowNumber === 2) {
+            // ? 第一格的樣式
+            cell.font = {
+                name: '微軟正黑體',
+                size: 24,
+                bold: true,
+                color: { argb: 'FFFF0000' }  
+            }
+            cell.fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: 'FFFFFF00' }  
+            }
+        } else {
+            // ? 其他格子的樣式
+            cell.font = {
+                name: '微軟正黑體',
+                size: 24,
+                bold: true,
+                color: { argb: 'FF3D7878' }  // 藍色 (ARGB 格式)
+            }
+        }
+    })
+
+
+    // 橫向的
+    // sheet.getRow(2).eachCell((cell,rowNumber)=>{
+    //     cell.fill = {
+    //         type: 'pattern',
+    //         pattern: 'solid',
+    //         fgColor: { argb: 'FFFFFF00' }  // 黃色背景
+    //     }
+    // })
+
+
+    sheet.getColumn(2).width = 30
+
+    sheet.getColumn(3).width = 40
+
+    sheet.mergeCells('A1:C1')
+
+
+
     // 表格裡面的資料都填寫完成之後，訂出下載的callback function
-		// 異步的等待他處理完之後，創建url與連結，觸發下載
-	
-		// const link = document.createElement("a");
-        const content =  await workbook.xlsx.writeBuffer();
-	    const blobData = new Blob([content], {
-	    //   type: "application/vnd.ms-excel;charset=utf-8;"
-         type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-	    });
-        saveAs(blobData, '抽籤結果.xlsx');
-	    // link.download = '測試的試算表.xlsx';
-	    // link.href = URL.createObjectURL(blobData);
-	    // link.click();
+    // 異步的等待他處理完之後，創建url與連結，觸發下載
+
+    // const link = document.createElement("a");
+    const content =  await workbook.xlsx.writeBuffer();
+    const blobData = new Blob([content], {
+    //   type: "application/vnd.ms-excel;charset=utf-8;"
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    });
+    saveAs(blobData, '抽籤結果.xlsx');
+    // link.download = '測試的試算表.xlsx';
+    // link.href = URL.createObjectURL(blobData);
+    // link.click();
     
 }
