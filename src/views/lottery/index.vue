@@ -346,9 +346,9 @@
 				name: "Table",
 				ref: "A2", // 表格起始位置
 				columns: [
-					{ name: "序號", width: "20" },
-					{ name: "得獎者", filterButton: true, width: "40" },
-					{ name: "獎品", filterButton: true, width: "100" },
+					{ name: "序號" },
+					{ name: "得獎者", filterButton: true },
+					{ name: "獎品", filterButton: true },
 				],
 				rows: [],
 			};
@@ -360,12 +360,9 @@
 			});
 		} else {
 			obj = {
-				name: "Table",
+				name: "TableTest",
 				ref: "A2", // 表格起始位置
-				columns: [
-					{ name: "序號", width: "20" },
-					{ name: "獎品", filterButton: true, width: "100" },
-				],
+				columns: [{ name: "序號" }, { name: "獎品", filterButton: true }],
 				rows: [],
 			};
 
@@ -373,12 +370,9 @@
 				const arr = [item.split("-")[1]];
 				arr.unshift(key + 1);
 				obj.rows.push(arr);
-				console.log(arr);
 			});
 		}
-
 		console.log("obj", obj);
-		// return;
 		excelExport(obj);
 	}
 

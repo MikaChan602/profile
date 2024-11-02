@@ -4,14 +4,13 @@ export async function excelExport (obj){
     console.log('test',obj)
     const workbook = new ExcelJs.Workbook()
     const sheet = workbook.addWorksheet('抽籤結果') // 工作表頁籤
-    // const sheet2 = workbook.addWorksheet('抽籤結果2')
+    const sheet2 = workbook.addWorksheet('抽籤結果2')
      // 添加工作簿屬性
 
     sheet.addTable(obj)
     // 凍結窗格
     sheet.views = [
-        {showGridLines: false},
-	    {state: 'frozen', xSplit: 1, ySplit: 1},
+	    {state: 'frozen', xSplit: 1, ySplit: 2},
     ]
 
     // 設置標籤顏色›    
@@ -21,7 +20,7 @@ export async function excelExport (obj){
 
     }
     // 針對所有表格設置一樣的寬度
-    // sheet.properties.defaultColWidth = 30
+    sheet.properties.defaultColWidth = 130
 
     // ? 個別設置寬度
     sheet.getColumn(1).width = 10
@@ -39,6 +38,10 @@ export async function excelExport (obj){
                 pattern: 'solid',
                 fgColor: { argb: 'FFFFFF00' }  
             }
+            cell.alignment = {
+                vertical: 'middle',     // 垂直置中
+                horizontal: 'center'    // 水平置中
+            }
         } else {
             // ? 其他格子的樣式
             cell.font = {
@@ -46,6 +49,10 @@ export async function excelExport (obj){
                 size: 24,
                 bold: true,
                 color: { argb: 'FF3D7878' }  // 藍色 (ARGB 格式)
+            }
+            cell.alignment = {
+                vertical: 'bottom',     // 垂直置中
+                horizontal: 'right'    // 水平置中
             }
         }
     })
